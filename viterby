@@ -1,0 +1,45 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr 21 12:40:21 2017
+
+@author: nirorman
+"""
+import numpy as np
+
+class Viterby:
+    def __init__(self, o, s, pi, y, a, b):
+        self.o = o
+        self.s = s
+        self.pi = pi
+        self.y = y
+        self.a = a
+        self.b = b
+        
+        self.T1 = self.pi*self.b[:,y[0]]
+        print self.T1
+        print self.T1*self.a*self.b
+
+
+def main():
+    observation_space = [0, 1] # 1= umbrella, 0 = no umbrella
+    state_space = [0, 1] # 1 = "rain", 0 = "no rain"
+    states = [[0.9, 0.1], # no rain, rain
+              [0.1, 0.9]]
+    transitions = [[0,   1], # umbrella, no umbrella
+                   [0.6, 0.4]] 
+    pi = [0.5, 0.5]
+    y = [1, 1, 0]
+    states_size = len(observation_space)
+    observations_size = len(state_space)
+    initial_probabilities = np.ndarray(shape= (1,states_size), dtype=float, buffer=np.array(pi)) # Pi
+    # transition matrix:
+    a = np.ndarray(shape=(states_size,states_size), dtype=float, buffer=np.array(states)) # states    
+    # emission matrix:                
+    b = np.ndarray(shape=(states_size,observations_size), dtype = float, buffer = np.array(transitions)) # observations
+    
+    v = Viterby(observation_space, state_space, initial_probabilities, y, a, b)
+    
+    
+if __name__ == "__main__":
+    main()
